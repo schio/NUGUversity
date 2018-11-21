@@ -25,7 +25,7 @@ def getDriver():
     driver.execute_script("const getParameter = WebGLRenderingContext.getParameter;WebGLRenderingContext.prototype.getParameter = function(parameter) {if (parameter === 37445) {return 'NVIDIA Corporation'} if (parameter === 37446) {return 'NVIDIA GeForce GTX 980 Ti OpenGL Engine';}return getParameter(parameter);};")
 
     return driver
-def Gunja():
+def getGunja():
     driver=getDriver()
     
     #군자관 메뉴 클릭
