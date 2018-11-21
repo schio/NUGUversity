@@ -3,6 +3,7 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 from pprint import pprint as p
 import re
+from datetime import datetime
 
 def getDriver():
     options = Options()
@@ -27,7 +28,7 @@ def getDriver():
     return driver
 def getGunja():
     driver=getDriver()
-    
+    year=datetime.today().year
     #군자관 메뉴 클릭
     driver.find_element_by_xpath("//a[contains(@onclick,'selectedCafeteria(3);')]").click()
     html = driver.page_source
@@ -61,6 +62,7 @@ def getGunja():
                 date=str(re.sub("\)","일",date))
                 data[i].append(day)
                 data[i].append(date)
+                data[i].append(str(year))
 
                 #메뉴 데이터 클리닝
                 data[i][2]=re.sub("&S","",data[i][2])
@@ -92,6 +94,7 @@ def getGunja():
                 date=str(re.sub("\)","일",date))
                 data[i].append(day)
                 data[i].append(date)
+                data[i].append(str(year))
 
                 #메뉴 데이터 클리닝
                 data[i][2]=re.sub("&S","",data[i][2])
@@ -105,15 +108,16 @@ def getGunja():
             temp=[]
             for n in dateAndIsDinner:
                 temp.append(n.text.strip())
-            data[9].append(data[8][0]) #date,day
-            data[9].append(temp[0]) #isDinner
+            data[i].append(data[8][0]) #date,day
+            data[i].append(temp[0]) #isDinner
+            
 
             # 메뉴리스트 크롤링
             menu = soup.select('tr.seq-10 > td > div')
             temp[0]=''
             for n in menu:
                 temp[0]=temp[0]+str(n.text.strip())+' '
-            data[9].append(temp[0])
+            data[i].append(temp[0])
 
             # day, date 전처리
             day=str(re.split("\(",data[i][0])[0])+'요일'
@@ -122,6 +126,7 @@ def getGunja():
             date=str(re.sub("\)","일",date))
             data[i].append(day)
             data[i].append(date)
+            data[i].append(str(year))
 
             #메뉴 데이터 클리닝
             data[i][2]=re.sub("&S","",data[i][2])
@@ -135,5 +140,5 @@ def getGunja():
     return data
 
 if __name__ == '__main__':
-    data=Gunja()
+    data=getGunja()
     p(data)
