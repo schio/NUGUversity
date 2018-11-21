@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
+from pprint import pprint as p
+import re
 
 options = Options()
 #head less mode
@@ -29,42 +31,106 @@ driver.find_element_by_xpath("//a[contains(@onclick,'selectedCafeteria(3);')]").
 html = driver.page_source
 soup = BeautifulSoup(html, 'html.parser')
 
-seqLen=10
-# data[10][4]
-
 data=[]
-# notices = soup.select('tr.seq-07 > th > div.th') #[0] 목(11/22) [1] 중식
-# notices = soup.select('tr.seq-07 > td > div.td')
-# # print(notices)
-# for n in notices:
-#     print(n.text.strip())
-for i in range(seqLen):
+for i in range(10): #월화수목금x중식,석식 = 10
     if i !=9:
-        if (i+1)%2==1:
+        if (i+1)%2==1: #seq가 홀수면 날짜, 석식 여부가 나오지만 짝수일 경우 석식 여부만 나와서
             data.append([])
-            notices = soup.select('tr.seq-0' + str(i+1) + ' > th > div.th')
+
+            # 요일, 날짜, 석식여부 크롤링
+            dateAndIsDinner = soup.select('tr.seq-0' + str(i+1) + ' > th > div.th')
             temp=[]
-            for n in notices:
+            for n in dateAndIsDinner:
                 temp.append(n.text.strip())
             data[i].append(temp[0]) #date,day
             data[i].append(temp[1]) #isDinner
-            # print(i)
-            # notices = soup.select('tr.seq-0'+str(i+1)+' > td > div')
-            # temp[0]=str('')
-            # for n in notices:
-            #     temp[0]=temp+n+' '
+
+            # 메뉴리스트 크롤링
+            menu = soup.select('tr.seq-0'+str(i+1)+' > td > div')
+            temp[0]=''
+            for n in menu:
+                temp[0]=temp[0]+str(n.text.strip())+' '
+            data[i].append(temp[0])
+
+            # day, date 전처리
+            day=str(re.split("\(",data[i][0])[0])+'요일'
+            date=str(re.split("\(",data[i][0])[1])
+            date=str(re.sub("/","월",date))
+            date=str(re.sub("\)","일",date))
+            data[i].append(day)
+            data[i].append(date)
+
+            #메뉴 데이터 클리닝
+            data[i][2]=re.sub("&S","",data[i][2])
+            data[i][2]=re.sub(" ","",data[i][2])
+            data[i][2]=re.sub("\\n"," ",data[i][2])
+            data[i][2]=re.sub("/"," ",data[i][2])
         else:
             data.append([])
-            notices = soup.select('tr.seq-0' + str(i+1) + ' > th > div.th')
-            temp=[]
-            for n in notices:
-                temp.append(n.text.strip())
 
-            t=i-1
+            # 요일, 날짜, 석식여부 크롤링
+            dateAndIsDinner = soup.select('tr.seq-0' + str(i+1) + ' > th > div.th')
+            temp=[]
+            for n in dateAndIsDinner:
+                temp.append(n.text.strip())
             data[i].append(data[i-1][0]) #date,day
             data[i].append(temp[0]) #isDinner
 
-print(data)
+            # 메뉴리스트 크롤링
+            menu = soup.select('tr.seq-0'+str(i+1)+' > td > div')
+            temp[0]=''
+            for n in menu:
+                temp[0]=temp[0]+str(n.text.strip())+' '
+            data[i].append(temp[0])
+
+            # day, date 전처리
+            day=str(re.split("\(",data[i][0])[0])+'요일'
+            date=str(re.split("\(",data[i][0])[1])
+            date=str(re.sub("/","월",date))
+            date=str(re.sub("\)","일",date))
+            data[i].append(day)
+            data[i].append(date)
+
+            #메뉴 데이터 클리닝
+            data[i][2]=re.sub("&S","",data[i][2])
+            data[i][2]=re.sub(" ","",data[i][2])
+            data[i][2]=re.sub("\\n"," ",data[i][2])
+            data[i][2]=re.sub("/"," ",data[i][2])
+    elif i==9:
+        data.append([])
+        # 요일, 날짜, 석식여부 크롤링
+        dateAndIsDinner = soup.select('tr.seq-10 > th > div.th')
+        temp=[]
+        for n in dateAndIsDinner:
+            temp.append(n.text.strip())
+        data[9].append(data[8][0]) #date,day
+        data[9].append(temp[0]) #isDinner
+
+        # 메뉴리스트 크롤링
+        menu = soup.select('tr.seq-10 > td > div')
+        temp[0]=''
+        for n in menu:
+            temp[0]=temp[0]+str(n.text.strip())+' '
+        data[9].append(temp[0])
+
+        # day, date 전처리
+        day=str(re.split("\(",data[i][0])[0])+'요일'
+        date=str(re.split("\(",data[i][0])[1])
+        date=str(re.sub("/","월",date))
+        date=str(re.sub("\)","일",date))
+        data[i].append(day)
+        data[i].append(date)
+
+        #메뉴 데이터 클리닝
+        data[i][2]=re.sub("&S","",data[i][2])
+        data[i][2]=re.sub(" ","",data[i][2])
+        data[i][2]=re.sub("\\n"," ",data[i][2])
+        data[i][2]=re.sub("/"," ",data[i][2])
+
+
+for row in data:
+    del row[0]
+p(data)
 
 # print(soup)
 
