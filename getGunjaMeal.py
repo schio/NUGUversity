@@ -22,6 +22,6 @@ driver.execute_script("const getParameter = WebGLRenderingContext.getParameter;W
 
 
 driver.implicitly_wait(3)
-driver.get_screenshot_as_file('test.png')
+driver.get_screenshot_as_file('test1.png')
 
 driver.quit()
