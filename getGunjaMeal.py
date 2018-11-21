@@ -130,14 +130,6 @@ for i in range(10): #월화수목금x중식,석식 = 10
 
 for row in data:
     del row[0]
-p(data)
+# p(data)
 
-# print(soup)
-
-# get html
-# html = driver.page_source
-# soup = BeautifulSoup(html, 'html.parser')
-# notices = soup.select('div.card-body > div.card-title')
-# for n in notices:
-#     print(n.text.strip())
 driver.quit()
