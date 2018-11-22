@@ -61,9 +61,15 @@ def getGunja(day):
     rows = cursor.fetchall()
 
     if len(rows)==0:
-        return day + '에는 식당을 운영하지 않습니다.'
+        return dayKorean(day) + '에는 식당을 운영하지 않습니다.'
     else:
-        return day + '의' + rows[0][0] + '메뉴는 '+rows[0][1] + '이고 ' + rows[1][0] + '메뉴는 ' + rows[1][1] + '입니다.'
+        return dayKorean(day) + '의' + rows[0][0] + '메뉴는 '+rows[0][1] + '이고 ' + rows[1][0] + '메뉴는 ' + rows[1][1] + '입니다.'
+
+def dayKorean(day):
+    days = ['B_YESTERDAY', 'YESTERDAY', 'TODAY', 'TOMORROW', 'A_TOMORROW']
+    koreans = ['그저께', '어제', '오늘', '내일', '모레']
+    return koreans[days.index(day)]
 
 if __name__ == '__main__':
+    a=5
     

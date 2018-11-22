@@ -28,7 +28,10 @@ def start(svc):
         which = params['which_2']
         name = which['value']
         return_v = which_cafeteria(name)
-        result = {return_v[0]: return_v[1]}
+        if result_v:
+            result = {return_v[0]: return_v[1]}
+        else:
+            isError = True
 
     # 학식 메뉴(식당별, 날짜별))
     elif actionName == 'answer.which_when_cafeteria':
@@ -37,7 +40,10 @@ def start(svc):
         name = which['value']
         day = when['value']
         return_v = which_when_cafeteria(name, day)
-        result = {return_v[0]: return_v[1]}
+        if result_v:
+            result = {return_v[0]: return_v[1]}
+        else:
+            isError = True
 
     # 케이스가 없는 경우
     else:
