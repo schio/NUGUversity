@@ -24,13 +24,15 @@ def start(svc):
     if actionName == 'answer.meal_price':
         mm = params['meal_name']
         name = mm['value']
-        result = meal_price(name)
+        return_v = meal_price(name)
+        result = {return_v[0]: return_v[1]}
 
     # 학식 메뉴(식당별)
     elif actionName == 'answer.which_cafeteria':
         which = params['which_2']
         name = which['value']
-        result = which_cafeteria(name)
+        return_v = which_cafeteria(name)
+        result = {return_v[0]: return_v[1]}
 
     # 학식 메뉴(식당별, 날짜별))
     elif actionName == 'answer.which_when_cafeteria':
@@ -38,7 +40,8 @@ def start(svc):
         when = params['when']
         name = which['value']
         day = when['value']
-        result = which_when_cafeteria(name, day)
+        return_v = which_when_cafeteria(name)
+        result = {return_v[0]: return_v[1]}
 
     # 케이스가 없는 경우
     else:
@@ -60,13 +63,13 @@ def start(svc):
 
 
 def meal_price(name):
-    return {'price': '4500'}
+    return {'price', '4500'}
 
 def which_cafeteria(name):
-    return {'menu_2': '동까스'}
+    return {'menu_2', '동까스'}
 
 def which_when_cafeteria(name, day):
-    return {'menu': '동까스2'}
+    return {'menu', '동까스2'}
 
 @app.route('/')
 def hello_world():
