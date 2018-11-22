@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pymysql
 import getMeal
+import telBook
 from pprint import pprint as p
 from datetime import datetime
 from datetime import timedelta
@@ -68,18 +69,49 @@ def saveStudentsBuilding():
     
     db.commit()
     db.close()
+
+def saveTelBook():
+    db=getDB()
+    cursor = db.cursor()
+    telBookData=telBook.getSejongTelBook()
+
+    for info in telBookData:
+        sql = "INSERT IGNORE INTO telBook(department, number) VALUES (%s, %s);"    
+        cursor.execute(sql,(info[0],info[1])) #ex 컴퓨터공학과, 3321
+    
+    db.commit()
+    db.close()
+
+def getTelBook(deptName):
+    db=getDB()
+    cursor = db.cursor()
+
+    sql = 'SELECT `number` FROM `telBook` WHERE `department` LIKE %s'
+    cursor.execute(sql,(deptName))
+    rows = cursor.fetchall()
+    if len(rows)==0:
+        return 0
+    else:
+        # return type ((3321,),)
+        return rows[0][0]
+    db.commit()
+    db.close()
+
 def getStudentsBuildingPrice(foodName):
     db=getDB()
     cursor = db.cursor()
     sql = "SELECT price FROM `mealStudentsBuilding` WHERE `foodList` LIKE %s;"
     
     cursor.execute(sql,(foodName))
-    rows=cursor.fetchall()
+    rows = cursor.fetchall()
     if len(rows)==0:
         return 0
     else:
         # return type (('3,500원',),)
         return rows[0][0]
+
+    db.commit()
+    db.close()
     
 
 def getGunja(day):
@@ -109,5 +141,5 @@ def dayKorean(day):
     return koreans[days.index(day)]
 
 if __name__ == '__main__':
-    getStudentsBuildingPrice('왕돈까스')
+    getTelBook('컴퓨터공학과')
     
