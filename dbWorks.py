@@ -17,23 +17,23 @@ def getDB():
 
 def getDay(day):
     #오늘 어제 내일 모레 글피 그저께
-    if day=='오늘':
+    if day=='TODAY':
         today=datetime.today()
         year=str(today.year)
         date=str(today.month)+'월'+ str(today.day)+'일'
-    elif day=='내일':
+    elif day=='TOMORROW':
         tomorrow=datetime.today() + timedelta(days=1)
         year=str(tomorrow.year)
         date=str(tomorrow.month)+'월' + str(tomorrow.day)+'일'
-    elif day=='글피':
+    elif day=='A_TOMORROW':
         twoDaysLater=datetime.today() + timedelta(days=2)
         year=str(twoDaysLater.year)
         date=str(twoDaysLater.month)+'월'+ str(twoDaysLater.day)+'일'
-    elif day=='어제':
+    elif day=='YESTERDAY':
         yesterday=datetime.today() - timedelta(days=1)
         year=str(yesterday.year)
         date=str(yesterday.month)+'월'+ str(yesterday.day)+'일'
-    elif day=='그저께':
+    elif day=='B_YESTERDAY':
         dayBeforeYesterday=datetime.today() - timedelta(days=2)
         year=str(dayBeforeYesterday.year)
         date=str(dayBeforeYesterday.month)+'월'+ str(dayBeforeYesterday.day)+'일'
