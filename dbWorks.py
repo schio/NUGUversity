@@ -16,7 +16,7 @@ def getDB():
     return db
 
 def getDay(day):
-    #오늘 어제 내일 모레 글피 그저께
+
     if day=='TODAY':
         today=datetime.today()
         year=str(today.year)
@@ -37,7 +37,6 @@ def getDay(day):
         dayBeforeYesterday=datetime.today() - timedelta(days=2)
         year=str(dayBeforeYesterday.year)
         date=str(dayBeforeYesterday.month)+'월'+ str(dayBeforeYesterday.day)+'일'
-
     return year,date
 
 def saveGunja():
@@ -52,8 +51,8 @@ def saveGunja():
     db.close()
 
 def getGunja(day):
-    # 오늘 어제 내일 모레 글피 그저께
     todayInfo=getDay(day)
+
     db=getDB()
     cursor = db.cursor()
     sql = "SELECT isDinner, foodList FROM mealGunja WHERE year LIKE %s AND date LIKE %s;"
@@ -61,7 +60,11 @@ def getGunja(day):
     rows = cursor.fetchall()
 
     if len(rows)==0:
-        return dayKorean(day) + '에는 식당을 운영하지 않습니다.'
+        saveGunja()
+        cursor.execute(sql,(todayInfo[0],todayInfo[1]))
+        rows = cursor.fetchall()
+        if len(rows)==0:
+            return dayKorean(day) + '에는 식당을 운영하지 않습니다.'
     else:
         return dayKorean(day) + '의' + rows[0][0] + '메뉴는 '+rows[0][1] + '이고 ' + rows[1][0] + '메뉴는 ' + rows[1][1] + '입니다.'
 
@@ -71,5 +74,5 @@ def dayKorean(day):
     return koreans[days.index(day)]
 
 if __name__ == '__main__':
-    a=5
+    p(getGunja('B_YESTERDAY'))
     
