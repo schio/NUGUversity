@@ -17,7 +17,6 @@ def getDriver():
 
     # driver setting
     driver = webdriver.Chrome(chrome_options=options, executable_path=r'/home/scio/install/chrome/chromedriver')
-    # driver.get('https://bds.bablabs.com/restaurants/MTI1NTM3Ng%3D%3D?campus_id=7u7tS3d3EL')
     driver.get('http://m.sejong.ac.kr/front/cafeteria.do')
 
     # for head less mode detection

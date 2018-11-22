@@ -22,19 +22,19 @@ def getDay(day):
         year=str(today.year)
         date=str(today.month)+'월'+ str(today.day)+'일'
     elif day=='내일':
-        tomorrow=datetime.today()+timedelta(days=1)
+        tomorrow=datetime.today() + timedelta(days=1)
         year=str(tomorrow.year)
-        date=str(tomorrow.month)+'월'+ str(tomorrow.day)+'일'
+        date=str(tomorrow.month)+'월' + str(tomorrow.day)+'일'
     elif day=='글피':
-        twoDaysLater=datetime.today()+timedelta(days=2)
+        twoDaysLater=datetime.today() + timedelta(days=2)
         year=str(twoDaysLater.year)
         date=str(twoDaysLater.month)+'월'+ str(twoDaysLater.day)+'일'
-    elif day=='글피':
-        yesterday=datetime.today()-timedelta(days=1)
+    elif day=='어제':
+        yesterday=datetime.today() - timedelta(days=1)
         year=str(yesterday.year)
         date=str(yesterday.month)+'월'+ str(yesterday.day)+'일'
     elif day=='그저께':
-        dayBeforeYesterday=datetime.today()-timedelta(days=2)
+        dayBeforeYesterday=datetime.today() - timedelta(days=2)
         year=str(dayBeforeYesterday.year)
         date=str(dayBeforeYesterday.month)+'월'+ str(dayBeforeYesterday.day)+'일'
 
@@ -65,4 +65,5 @@ def getGunja(day):
     else:
         return day + '의' + rows[0][0] + '메뉴는 '+rows[0][1] + '이고 ' + rows[1][0] + '메뉴는 ' + rows[1][1] + '입니다.'
 
-
+if __name__ == '__main__':
+    
