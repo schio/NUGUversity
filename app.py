@@ -52,7 +52,14 @@ def start(svc):
         library_class = library_class['value']
         return_v = which_library_seat(library_class)
         if return_v:
-            result = {'total_seats': return_v[0], 'empty_seats': return_v[1]}
+            ratio = return_v[1] / return_v[0]
+            if ratio > 0.7:
+                ratio_status = 'high'
+            elif ratio > 0.4:
+                ratio_status = 'middle'
+            else:
+                ratio_status = 'low'
+            result = {'total_seats': return_v[0], 'empty_seats': return_v[1], 'status': ratio_status}
         else:
             isError = True
 
