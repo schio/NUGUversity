@@ -61,8 +61,8 @@ def getEmptySeats(room):
     for _info in info:
         totalSeats = totalSeats + int(_info[2])
         emptySeats = emptySeats + int(_info[6])
-    room=room+'열람실'
-    return room + '의 총 좌석수는 ' + str(totalSeats) + ' 잔여좌석수는 ' + str(emptySeats) + '입니다.'
+    #return room + '의 총 좌석수는 ' + str(totalSeats) + '석이며, 현재 남은 좌석수는 ' + str(emptySeats) + '석입니다'
+    return (str(totalSeats), str(emptySeats))
 
 if __name__ == '__main__':
     info=getEmptySeats('3층')

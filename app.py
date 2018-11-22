@@ -52,7 +52,7 @@ def start(svc):
         library_class = library_class['value']
         return_v = which_library_seat(library_class)
         if return_v:
-            result = {return_v[0]: return_v[1]}
+            result = {'total_seats': return_v[0], 'empty_seats': return_v[1]}
         else:
             isError = True
 
@@ -90,8 +90,8 @@ def which_when_cafeteria(name, day):
         return ('menu', text)
 
 def which_library_seat(library_class):
-    text = getLibraryInfo.getEmptySeats(library_class)
-    return text
+    return getLibraryInfo.getEmptySeats(library_class)
+    
 
 @app.route('/')
 def hello_world():
