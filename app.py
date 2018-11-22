@@ -28,7 +28,7 @@ def start(svc):
         which = params['which_2']
         name = which['value']
         return_v = which_cafeteria(name)
-        if result_v:
+        if return_v:
             result = {return_v[0]: return_v[1]}
         else:
             isError = True
@@ -40,10 +40,21 @@ def start(svc):
         name = which['value']
         day = when['value']
         return_v = which_when_cafeteria(name, day)
-        if result_v:
+        if return_v:
             result = {return_v[0]: return_v[1]}
         else:
             isError = True
+
+    # n 열람실 좌석 정보 가져오기
+    elif actionName == 'answer.which_library_seat':
+        library_class = params['library_class']
+        library_class = library_class['value']
+        return_v = which_library_seat(library_class)
+        if return_v:
+            result = {return_v[0]: return_v[1]}
+        else:
+            isError = True
+
 
     # 케이스가 없는 경우
     else:
@@ -69,13 +80,17 @@ def meal_price(name):
 
 def which_cafeteria(name):
     if name == '군자관':
-        text = dbWorks.getGunja('오늘')
+        text = dbWorks.getGunja('TODAY')
         return ('menu_2', text)
 
 def which_when_cafeteria(name, day):
     if name == '군자관':
         text = dbWorks.getGunja(day)
         return ('menu', text)
+
+def which_library_seat(library_class):
+    text = getLibraryInfo.getEmptySeats(library_class)
+    return text
 
 @app.route('/')
 def hello_world():
