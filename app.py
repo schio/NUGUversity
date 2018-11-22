@@ -3,6 +3,7 @@ from flask import request
 from pprint import pprint as p
 import json
 import dbWorks
+import getLibraryInfo
 
 app = Flask(__name__)
 

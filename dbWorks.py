@@ -64,11 +64,11 @@ def getGunja(day):
         cursor.execute(sql,(todayInfo[0],todayInfo[1]))
         rows = cursor.fetchall()
         if len(rows)==0:
-            return dayKorean(day) + '에는 식당을 운영하지 않습니다.'
+            return dayKorean(day) + '에는 식당을 운영하지 않습니다'
     else:
         lunch = ", ".join(rows[1][1].split(' ')[:3])
         dinner = ", ".join(rows[0][1].split(' ')[:3])
-        return dayKorean(day) + '의 점심 메뉴는 ' + lunch + '이고, 저녁 메뉴는 ' + dinner + '입니다.'
+        return dayKorean(day) + '의 점심 메뉴는 ' + lunch + '이고, 저녁 메뉴는 ' + dinner + '입니다'
 
 def dayKorean(day):
     days = ['B_YESTERDAY', 'YESTERDAY', 'TODAY', 'TOMORROW', 'A_TOMORROW']

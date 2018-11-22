@@ -28,19 +28,24 @@ def getDriver(url):
 
 def getUrl(room):
     # A B C D 3층
-    if room=='A':
+    if room=='A열람실':
         return ['http://210.107.226.14/seat/roomview5.asp?room_no=1']
-    elif room=='B':
+    elif room=='B열람실':
         return ['http://210.107.226.14/seat/roomview5.asp?room_no=2']
-    elif room=='C':
+    elif room=='C열람실':
         return ['http://210.107.226.14/seat/roomview5.asp?room_no=3']
-    elif room=='D':
+    elif room=='D열람실':
         return ['http://210.107.226.14/seat/roomview5.asp?room_no=4','http://210.107.226.14/seat/roomview5.asp?room_no=5']
-    elif room=='3층':
+    elif room=='3층열람실':
         return ['http://210.107.226.14/seat/roomview5.asp?room_no=6','http://210.107.226.14/seat/roomview5.asp?room_no=7']
 
 def getEmptySeats(room):
     urls=getUrl(room)
+    
+    # 예외처리
+    if !urls:
+        return ''
+
     info=[]
     totalSeats=0
     emptySeats=0
