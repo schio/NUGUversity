@@ -66,7 +66,9 @@ def getGunja(day):
         if len(rows)==0:
             return dayKorean(day) + '에는 식당을 운영하지 않습니다.'
     else:
-        return dayKorean(day) + '의' + rows[0][0] + '메뉴는 '+rows[0][1] + '이고 ' + rows[1][0] + '메뉴는 ' + rows[1][1] + '입니다.'
+        lunch = ", ".join(rows[1][1].split(' ')[:3])
+        dinner = ", ".join(rows[0][1].split(' ')[:3])
+        return dayKorean(day) + '의 점심 메뉴는 ' + lunch + '이고, 저녁 메뉴는 ' + dinner + '입니다.'
 
 def dayKorean(day):
     days = ['B_YESTERDAY', 'YESTERDAY', 'TODAY', 'TOMORROW', 'A_TOMORROW']
