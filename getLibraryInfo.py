@@ -43,7 +43,7 @@ def getEmptySeats(room):
     urls=getUrl(room)
     
     # 예외처리
-    if !urls:
+    if not urls:
         return ''
 
     info=[]
