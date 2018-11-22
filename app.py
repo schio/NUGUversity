@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from pprint import pprint as p
 import json
+import dbWorks
 
 app = Flask(__name__)
 
@@ -35,7 +36,7 @@ def start(svc):
         when = params['when']
         name = which['value']
         day = when['value']
-        return_v = which_when_cafeteria(name)
+        return_v = which_when_cafeteria(name, day)
         result = {return_v[0]: return_v[1]}
 
     # 케이스가 없는 경우
@@ -61,10 +62,14 @@ def meal_price(name):
     return ('price', '4500')
 
 def which_cafeteria(name):
-    return ('menu_2', '동까스')
+    if name == '군자관':
+        text = dbWorks.getGunja('오늘')
+        return ('menu_2', text)
 
 def which_when_cafeteria(name, day):
-    return ('menu', '동까스2')
+    if name == '군자관':
+        text = dbWorks.getGunja(day)
+        return ('menu', text)
 
 @app.route('/')
 def hello_world():
