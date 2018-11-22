@@ -46,9 +46,41 @@ def saveGunja():
     # mealGunja Columns -> idx year date day insDinner foodList
     for gunjaData in gunjaDatas:
         sql = "INSERT IGNORE INTO mealGunja(year, date, day, isDinner, foodList) VALUES (%s, %s, %s, %s, %s);"    
-        cursor.execute(sql,(gunjaData[4], gunjaData[3], gunjaData[2], gunjaData[0], gunjaData[1]))
+        cursor.execute(sql,(gunjaData[4], gunjaData[3], gunjaData[2], gunjaData[0], gunjaData[1])) # 2018 11월22일 금요일 중식 불고기
     db.commit()
     db.close()
+
+
+def saveStudentsBuilding():
+    db=getDB()
+    cursor = db.cursor()
+    foodList,price=getMeal.getStudentsBuilding()
+
+    # init mealStudentsBuilding part 
+    initCursor = db.cursor()
+    truncateSql = "Truncate mealStudentsBuilding;" # init mealStudentsBuilding table
+    initCursor.execute(truncateSql)
+
+    # mealStudentsBuilding Columns -> idx foodList price currentTime
+    for i in range(len(foodList)):
+        sql = "INSERT IGNORE INTO mealStudentsBuilding(foodList, price) VALUES (%s, %s);"    
+        cursor.execute(sql,(foodList[i],price[i])) #foodName, price
+    
+    db.commit()
+    db.close()
+def getStudentsBuildingPrice(foodName):
+    db=getDB()
+    cursor = db.cursor()
+    sql = "SELECT price FROM `mealStudentsBuilding` WHERE `foodList` LIKE %s;"
+    
+    cursor.execute(sql,(foodName))
+    rows=cursor.fetchall()
+    if len(rows)==0:
+        return 0
+    else:
+        # return type (('3,500원',),)
+        return rows[0][0]
+    
 
 def getGunja(day):
     todayInfo=getDay(day)
@@ -69,6 +101,7 @@ def getGunja(day):
         lunch = ", ".join(rows[1][1].split(' ')[:3])
         dinner = ", ".join(rows[0][1].split(' ')[:3])
         return dayKorean(day) + '의 점심 메뉴는 ' + lunch + '이고, 저녁 메뉴는 ' + dinner + '입니다'
+    db.close()
 
 def dayKorean(day):
     days = ['B_YESTERDAY', 'YESTERDAY', 'TODAY', 'TOMORROW', 'A_TOMORROW']
@@ -76,5 +109,5 @@ def dayKorean(day):
     return koreans[days.index(day)]
 
 if __name__ == '__main__':
-    p(getGunja('B_YESTERDAY'))
+    getStudentsBuildingPrice('왕돈까스')
     

@@ -137,7 +137,22 @@ def getGunja():
         del row[0]
     driver.quit()
     return data
+def getStudentsBuilding():
+    driver=getDriver()
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
 
+    menu=[]
+    price=[]
+
+    menuSelect = soup.select('body > div > div.body > div > div > div > div.tab-content > div > div > div.article > div > table > tbody > tr > th > div.th')
+    for m in menuSelect:
+        menu.append(m.text.strip())
+
+    priceSelect = soup.select('body > div > div.body > div > div > div > div.tab-content > div > div > div.article > div > table > tbody > tr > td > div')
+    for pr in priceSelect:
+        price.append(pr.text.strip())
+    return menu, price
 if __name__ == '__main__':
-    data=getGunja()
+    data=getStudentsBuilding()
     p(data)
