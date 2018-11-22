@@ -4,11 +4,6 @@ from pprint import pprint as p
 import json
 
 app = Flask(__name__)
-def get_leaf_dict( dict, key_list):
-    res=dict
-    for key in key_list:
-        res=dict.setdefault( key, {} )
-    return res
 
 @app.route('/nugu/<svc>', methods=['POST'])
 def start(svc):
@@ -59,7 +54,7 @@ def start(svc):
             "version": "2.0",
             "resultCode": "Error"
         }
-    return result_dict
+    return json.dumps(result_dict)
 
 
 def meal_price(name):
