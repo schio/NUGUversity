@@ -63,13 +63,13 @@ def start(svc):
 
 
 def meal_price(name):
-    return {'price', '4500'}
+    return ('price', '4500')
 
 def which_cafeteria(name):
-    return {'menu_2', '동까스'}
+    return ('menu_2', '동까스')
 
 def which_when_cafeteria(name, day):
-    return {'menu', '동까스2'}
+    return ('menu', '동까스2')
 
 @app.route('/')
 def hello_world():
