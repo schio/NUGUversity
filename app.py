@@ -84,7 +84,8 @@ def start(svc):
 
 
 def meal_price(name):
-    return ('price', '4500')
+    mealPrice = dbWorks.getStudentsBuildingPrice(name)
+    return ('price', mealPrice)
 
 def which_cafeteria(name):
     if name == '군자관':
