@@ -65,4 +65,4 @@ def getGunja(day):
     else:
         return day + '의' + rows[0][0] + '메뉴는 '+rows[0][1] + '이고 ' + rows[1][0] + '메뉴는 ' + rows[1][1] + '입니다.'
 
-p(getGunja('내일'))
+
