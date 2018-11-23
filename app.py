@@ -6,6 +6,7 @@ import re
 import dbWorks
 import getLibraryInfo
 import shortUrlN
+import requests
 
 app = Flask(__name__)
 
@@ -140,7 +141,17 @@ def get_detail_notice(index):
     title, url, writer = data
 
     # 문자 보내기
-
+    receiverName = '송치오'
+    receiverNumber = '01025721179'
+    msgBody = '[NUGUversity] {}님, 안녕하세요. 요청하신 공지사항을 보내드려요. 📡 {} 📮 {}'.format(receiverName, title, url)
+    r = requests.post("https://api-sms.cloud.toast.com/sms/v2.1/appKeys/rSqlWWwKpdOL26r1/sender/mms", data={
+        'title': "🏛공지사항 안내",
+        'body': msgBody,
+        'sendNo': '01076332933',
+        'recipientList':[
+            {'recipientNo':receiverNumber}
+            ]
+        })
 
     # text 생성
     return ('notice_title', title, 'notice_writer', writer)
