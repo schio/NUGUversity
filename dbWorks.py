@@ -122,6 +122,18 @@ def saveTelBook():
     
     db.commit()
     db.close()
+def saveCalendar():
+    db=getDB()
+    cursor = db.cursor()
+    calendarData=calendar.getCalendar()
+
+    for event in calendarData():
+        sql = "INSERT IGNORE INTO calendar(semester, event, startDate, endDate) VALUES (%s, %s, %s, %s);"
+        cursor.execute(sql,(event[0], event[1], event[2], event[3]))
+
+    db.commit()
+    db.close()
+        
 def getDeptTime(deptName):
     db=getDB()
     cursor = db.cursor()
@@ -205,5 +217,4 @@ def dayKorean(day):
 
 if __name__ == '__main__':
     a=5
-    print(getNotice())
-    
+    saveCalendar()
