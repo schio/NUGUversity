@@ -126,10 +126,10 @@ def phone_book(dept_name):
 
 def dept_time(dept_name):
     data = dbWorks.getDeptTime(dept_name)
-    if len(data) == 1:
-        return ('open_time', data)
-    else:
+    if len(data) == 2:
         return ('open_time', data[0], 'close_time', data[1])
+    else:
+        return ('open_time', data)
 
 # 숫자 => 한글 (전화번호 tts)
 def numToKorean(n):
