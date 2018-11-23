@@ -2,6 +2,7 @@
 import pymysql
 import getMeal
 import telBook
+import deptBook
 from pprint import pprint as p
 from datetime import datetime
 from datetime import timedelta
@@ -69,7 +70,17 @@ def saveStudentsBuilding():
     
     db.commit()
     db.close()
+def saveDeptBook():
+    db=getDB()
+    cursor = db.cursor()
+    deptTimeData=deptBook.getSejongdeptTime()
 
+    for info in deptTimeData:
+        sql = "INSERT IGNORE INTO deptTime(dept, openTime, closeTime) VALUES (%s, %s, %s);"    
+        cursor.execute(sql,(info[0],info[1],info[2]))
+    
+    db.commit()
+    db.close()
 def saveTelBook():
     db=getDB()
     cursor = db.cursor()
@@ -81,7 +92,23 @@ def saveTelBook():
     
     db.commit()
     db.close()
+def getDeptTime(deptName):
+    db=getDB()
+    cursor = db.cursor()
 
+    if deptName=='학술정보원':
+        return '평일에는 오전 9시부터 오후 10시까지이며, 토요일과 방학은 오후 5시까지입니다. 열람실은 24시간 '
+
+    sql = 'SELECT `openTime`, `closeTime` FROM `deptTime` WHERE `dept` LIKE %s'
+    cursor.execute(sql,(deptName))
+    rows = cursor.fetchall()
+    if len(rows)==0:
+        return 0
+    else:
+        # return type (('오전 9시', '오후 6시'),)
+        return rows[0][0],rows[0][1] # openTime, closeTime
+    db.commit()
+    db.close()
 def getTelBook(deptName):
     db=getDB()
     cursor = db.cursor()
@@ -141,5 +168,5 @@ def dayKorean(day):
     return koreans[days.index(day)]
 
 if __name__ == '__main__':
-    getTelBook('컴퓨터공학과')
+    p(getDeptTime('학술정보원'))
     
