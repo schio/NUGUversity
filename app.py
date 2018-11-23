@@ -144,9 +144,9 @@ def get_detail_notice(index):
     receiverName = '송치오'
     receiverNumber = '01025721179'
     headers = {'Content-Type': 'application/json; charset=utf-8'}
-    msgBody = '[NUGUversity] {}님, 안녕하세요. 요청하신 공지사항을 보내드려요. 📡 {} 📮 {}'.format(receiverName, title, url)
+    msgBody = '[NUGUversity] {}님, 안녕하세요. 요청하신 공지사항을 보내드려요. ▶{} ▶{}'.format(receiverName, title, url)
     msgData = {
-        'title': "🏛공지사항 안내",
+        'title': "공지사항 안내",
         'body': msgBody,
         'sendNo': '01076332933',
         'recipientList':[
