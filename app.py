@@ -129,7 +129,7 @@ def dept_time(dept_name):
     if len(data) == 2:
         return ('open_time', data[0], 'close_time', data[1])
     else:
-        return ('open_time', data)
+        return ('open_time', data, 'close_time', '')
 
 # 숫자 => 한글 (전화번호 tts)
 def numToKorean(n):
