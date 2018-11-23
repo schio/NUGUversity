@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from pprint import pprint as p
 import json
+import re
 import dbWorks
 import getLibraryInfo
 import shortUrlN
@@ -29,7 +30,7 @@ def start(svc):
     elif actionName == 'answer.random_meal':
         data = dbWorks.getRandomStudentBuildingFood()
         result = {'meal_name_random': data}
-        
+
     # 학식 메뉴(식당별)
     elif actionName == 'answer.which_cafeteria':
         which = params['which_2']
@@ -92,6 +93,8 @@ def start(svc):
     # 공지사항 가져오기
     elif actionName == 'answer.get_notice':
         return_v = dbWorks.getNotice()
+        for i in range(3):
+            return_v[i] = re.sub('()†', '', return_v[i])
         result = {
             'first': return_v[0],
             'second': return_v[1],
@@ -124,11 +127,18 @@ def start(svc):
     return json.dumps(result_dict)
 
 def get_detail_notice(index):
+    nth_korean = ['첫번째', '두번째', '세번째']
+    index = nth_korean.index(index)
+
     # 데이터 가져오기
+    data = dbWorks.getNoticeIncludeLink(index)
+    title, url, writer = data[index]
 
     # 문자 보내기
 
+
     # text 생성
+    return ('notice_title', title, 'notice_writer', writer)
 
 def meal_price(name):
     mealPrice = dbWorks.getStudentsBuildingPrice(name)
