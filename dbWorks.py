@@ -131,6 +131,21 @@ def getNotice():
     else:
         # return type (('오전 9시', '오후 6시'),)
         return rows[0][0], rows[1][0], rows[2][0] # openTime, closeTime
+def getNoticeIncludeLink(idx):
+    db=getDB()
+    cursor = db.cursor()
+
+    sql='SELECT `title`,link, writer FROM `notice` ORDER BY numOfTitle LIMIT 1 OFFSET %s;'
+
+    cursor.execute(sql,(idx-1))
+    rows = cursor.fetchall()
+    db.commit()
+    db.close()
+    if len(rows)==0:
+        return 0
+    else:
+        # return type (('오전 9시', '오후 6시'),)
+        return rows[0] # openTime, closeTime
 
 def saveDeptBook():
     db=getDB()
@@ -167,6 +182,11 @@ def saveCalendar():
     db.close()
         
 def getCalendar(event):
+    today=datetime.today()
+    nowMonth=today.month
+    if nowMonth>6 and nowMonth<=12:
+        semester='2학기'
+
     db=getDB()
     cursor = db.cursor()
 
@@ -248,5 +268,6 @@ def dayKorean(day):
 
 if __name__ == '__main__':
     a=5
-    p(getCalendar('개강'))
-    p(getCalendar('중간고사'))
+    # p(getCalendar('개강'))
+    # p(getCalendar('중간고사'))
+    p(getNoticeIncludeLink(1))
