@@ -144,14 +144,17 @@ def get_detail_notice(index):
     receiverName = '송치오'
     receiverNumber = '01025721179'
     msgBody = '[NUGUversity] {}님, 안녕하세요. 요청하신 공지사항을 보내드려요. 📡 {} 📮 {}'.format(receiverName, title, url)
-    r = requests.post("https://api-sms.cloud.toast.com/sms/v2.1/appKeys/rSqlWWwKpdOL26r1/sender/mms", data={
+    msgData = {
         'title': "🏛공지사항 안내",
         'body': msgBody,
         'sendNo': '01076332933',
         'recipientList':[
             {'recipientNo':receiverNumber}
             ]
-        })
+        }
+    r = requests.post("https://api-sms.cloud.toast.com/sms/v2.1/appKeys/rSqlWWwKpdOL26r1/sender/mms", data=json.dumps(msgData))
+        
+    print(r.text)
 
     # text 생성
     return ('notice_title', title, 'notice_writer', writer)
