@@ -3,7 +3,7 @@ import pymysql
 import getMeal
 import telBook
 import deptBook
-import getNotice
+import getNotice as noticeGetter
 import calendar
 from pprint import pprint as p
 from datetime import datetime
@@ -109,7 +109,7 @@ def saveNotice():
     cursor = db.cursor()
 
     # return type [titles, writers, writeTimes, numOfTitles]
-    titles, writers, writeTimes, numOfTitles, urls = getNotice.getNotice()
+    titles, writers, writeTimes, numOfTitles, urls = noticeGetter.getNotice()
 
     for i in range(len(titles)):
         sql = "INSERT IGNORE INTO notice(title, writer, writrTime, numOfTitle, link) VALUES (%s, %s, %s, %s, %s);"    
@@ -286,7 +286,8 @@ def dayKorean(day):
 
 
 if __name__ == '__main__':
-    p(getCalendar('개강'))
-    p(getCalendar('중간고사'))
-    p(getCalendarIncludeSemester('중간고사','1학기'))
-    p(getNoticeIncludeLink(1))
+    # p(getCalendar('개강'))
+    # p(getCalendar('중간고사'))
+    # p(getCalendarIncludeSemester('중간고사','1학기'))
+    # p(getNoticeIncludeLink(1))
+    p(getNotice())
