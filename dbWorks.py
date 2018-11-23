@@ -85,6 +85,21 @@ def saveNotice():
     db.commit()
     db.close()
 
+def getNotice():
+    db=getDB()
+    cursor = db.cursor()
+
+    sql = 'SELECT `title` FROM `notice` WHERE `dept` LIKE %s'
+    cursor.execute(sql,(deptName))
+    rows = cursor.fetchall()
+    db.commit()
+    db.close()
+    if len(rows)==0:
+        return 0
+    else:
+        # return type (('오전 9시', '오후 6시'),)
+        return rows[0][0],rows[0][1] # openTime, closeTime
+
 def saveDeptBook():
     db=getDB()
     cursor = db.cursor()
@@ -188,6 +203,9 @@ def dayKorean(day):
     koreans = ['그저께', '어제', '오늘', '내일', '모레']
     return koreans[days.index(day)]
 
+
+
+
 if __name__ == '__main__':
-    saveNotice()
+    a=5
     
