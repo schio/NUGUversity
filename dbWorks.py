@@ -72,6 +72,37 @@ def saveStudentsBuilding():
     db.commit()
     db.close()
 
+
+def getStudentsBuildingPrice(foodName):
+    db=getDB()
+    cursor = db.cursor()
+    sql = "SELECT price FROM `mealStudentsBuilding` WHERE `foodList` LIKE %s;"
+    
+    cursor.execute(sql,(foodName))
+    rows = cursor.fetchall()
+    db.commit()
+    db.close()
+    if len(rows)==0:
+        return 0
+    else:
+        # return type (('3,500원',),)
+        return rows[0][0]
+
+def getRandomStudentBuildingFood():
+    db=getDB()
+    cursor = db.cursor()
+    sql = "SELECT foodList FROM mealStudentsBuilding ORDER BY RAND() LIMIT 1;"
+    
+    
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    db.commit()
+    db.close()
+    if len(rows)==0:
+        return 0
+    else:
+        return rows[0][0]
+
 def saveNotice():
     db=getDB()
     cursor = db.cursor()
@@ -155,22 +186,6 @@ def getTelBook(deptName):
         # return type ((3321,),)
         return rows[0][0]
 
-
-def getStudentsBuildingPrice(foodName):
-    db=getDB()
-    cursor = db.cursor()
-    sql = "SELECT price FROM `mealStudentsBuilding` WHERE `foodList` LIKE %s;"
-    
-    cursor.execute(sql,(foodName))
-    rows = cursor.fetchall()
-    db.commit()
-    db.close()
-    if len(rows)==0:
-        return 0
-    else:
-        # return type (('3,500원',),)
-        return rows[0][0]
-
 def getGunja(day):
     todayInfo=getDay(day)
 
@@ -201,9 +216,7 @@ def dayKorean(day):
     return koreans[days.index(day)]
 
 
-
-
 if __name__ == '__main__':
     a=5
-    print(getNotice())
+    print(getRandomStudentBuildingFood())
     
