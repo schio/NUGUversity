@@ -121,12 +121,21 @@ def which_library_seat(library_class):
     
 def phone_book(dept_name):
     phone_number = dbWorks.getTelBook(dept_name)
+    phone_number = numToKorean(phone_number)
     return ('phone_number', phone_number)
 
 def dept_time(dept_name):
     open_time, close_time = dbWorks.getDeptTime(dept_name)
     return ('open_time', open_time, 'close_time', close_time)
 
+
+# 숫자 => 한글 (전화번호 tts)
+def numToKorean(n):
+    koreans = ['공', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
+    text = ""
+    for i in n:
+        text += koreans[int(i)]
+    return text
 
 @app.route('/')
 def hello_world():
