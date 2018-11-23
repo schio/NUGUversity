@@ -95,7 +95,7 @@ def start(svc):
         return_v = dbWorks.getNotice()
         titles = []
         for i in range(3):
-            titles[i] = re.sub('()†', '', return_v[i])
+            titles.append(re.sub('()†', '', return_v[i]))
         result = {
             'first': titles[0],
             'second': titles[1],
