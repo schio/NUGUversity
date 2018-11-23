@@ -3,7 +3,7 @@ import pymysql
 import getMeal
 import telBook
 import deptBook
-import noticeGetter
+import getNotice
 import calendar
 from pprint import pprint as p
 from datetime import datetime
@@ -109,7 +109,7 @@ def saveNotice():
     cursor = db.cursor()
 
     # return type [titles, writers, writeTimes, numOfTitles]
-    titles, writers, writeTimes, numOfTitles, urls = noticeGetter.getNotice()
+    titles, writers, writeTimes, numOfTitles, urls = getNotice.getNotice()
 
     for i in range(len(titles)):
         sql = "INSERT IGNORE INTO notice(title, writer, writrTime, numOfTitle, link) VALUES (%s, %s, %s, %s, %s);"    
