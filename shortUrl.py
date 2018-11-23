@@ -1,12 +1,50 @@
-import http.client
+# import http.client
+# import json
+# import sys
+
+# import re
+
+# def shorterURL(url):
+#     # API load
+#     f = open('./shortUrlAPI','r')
+#     lines = f.readlines()
+#     api=[]
+#     for line in lines:
+#         api.append(line)
+#     api_key=api[0]
+#     pattern = re.compile(r'\s+')
+#     api_key = re.sub(pattern, '', api_key)
+#     print(api_key)
+#     f.close
+
+#     conn = None
+#     s_url = ''
+#     try:
+#         data = json.dumps({'longUrl' : str(url)}).encode('utf-8')
+#         content_length = len(data)
+#         uri = '/urlshortener/v1/url?key=%s' % api_key
+#         conn = http.client.HTTPSConnection('www.googleapis.com', 443)
+#         conn.connect()
+#         conn.putrequest('POST', uri)
+#         conn.putheader('Content-Type', 'application/json')
+#         conn.putheader('Content-Length', str(content_length))
+#         conn.endheaders()
+#         conn.send(data)
+#         resp = conn.getresponse().read()
+#         resp = resp.decode('utf-8')
+#         s_url = json.loads(resp)['id']
+#     except Exception as exc:
+#         print('Error', exc)
+#     finally:
+#         if conn is not None:
+#             conn.close()
+#     return s_url
+
 import json
-import sys
-
+import requests
 import re
-
-
-def shorterURL(url):
-    # API load
+#function to shorten the url
+def urlShotern(url):
     f = open('./shortUrlAPI','r')
     lines = f.readlines()
     api=[]
@@ -15,34 +53,25 @@ def shorterURL(url):
     api_key=api[0]
     pattern = re.compile(r'\s+')
     api_key = re.sub(pattern, '', api_key)
-    print(api_key)
-    f.close
 
-    conn = None
-    s_url = ''
-    try:
-        data = json.dumps({'longUrl' : str(url)}).encode('utf-8')
-        content_length = len(data)
-        uri = '/urlshortener/v1/url?key=%s' % api_key
-        conn = http.client.HTTPSConnection('www.googleapis.com', 443)
-        conn.connect()
-        conn.putrequest('POST', uri)
-        conn.putheader('Content-Type', 'application/json')
-        conn.putheader('Content-Length', str(content_length))
-        conn.endheaders()
-        conn.send(data)
-        resp = conn.getresponse().read()
-        resp = resp.decode('utf-8')
-        s_url = json.loads(resp)['id']
-    except Exception as exc:
-        print('Error', exc)
-    finally:
-        if conn is not None:
-            conn.close()
-    return s_url
+    
+    gurl="https://www.googleapis.com/urlshortener/v1/url?key="+'AIzaSyBIM1GLUey43WUQndcLXbAa_HEBDPo3cps'
+    data={}
+    data['longUrl']=url
+    data_json = json.dumps(data)
+    headers = {'Content-type': 'application/json'}
+    response = requests.post(gurl, data=data_json, headers=headers)
+    a=response.json()
+    print(a)
+    return a['id']
+
+#main
 
 if __name__ == '__main__':
-    d=shorterURL('http://board.sejong.ac.kr/viewcount.do?rtnUrl=/boardview.do?pkid=110237^currentPage=1^searchField=ALL^siteGubun=19^menuGubun=1^bbsConfigFK=333^searchLowItem=ALL&searchValue=&gubun=&tableName=SJU_BBSDATA&fieldName=VIEWCOUNT&viewNum=82&whereCon=PKID=110237')  
+    # d=shorterURL('http://board.sejong.ac.kr/viewcount.do?rtnUrl=/boardview.do?pkid=110237^currentPage=1^searchField=ALL^siteGubun=19^menuGubun=1^bbsConfigFK=333^searchLowItem=ALL&searchValue=&gubun=&tableName=SJU_BBSDATA&fieldName=VIEWCOUNT&viewNum=82&whereCon=PKID=110237')  
+    # d=shorterURL('http://www.naver.com')
+    short=urlShotern("www.techfeed360.com")
+    print (short)
 
 # import json
 # import urllib.parse
