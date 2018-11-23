@@ -133,7 +133,7 @@ def dept_time(dept_name):
 def numToKorean(n):
     koreans = ['공', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
     text = ""
-    for i in n:
+    for i in str(n):
         text += koreans[int(i)]
     return text
 
