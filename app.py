@@ -93,12 +93,13 @@ def start(svc):
     # 공지사항 가져오기
     elif actionName == 'answer.get_notice':
         return_v = dbWorks.getNotice()
+        titles = []
         for i in range(3):
-            return_v[i] = re.sub('()†', '', return_v[i])
+            titles[i] = re.sub('()†', '', return_v[i])
         result = {
-            'first': return_v[0],
-            'second': return_v[1],
-            'third': return_v[2]
+            'first': titles[0],
+            'second': titles[1],
+            'third': titles[2]
         }
 
     # 1개의 공지사항 가져오기 (문자발송)
