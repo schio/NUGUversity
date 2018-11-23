@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from pprint import pprint as p
 import re
 from datetime import datetime
+import shortUrlN
 def getDriver():
     options = Options()
     #head less mode
@@ -33,23 +34,26 @@ def getNotice():
     writerSelector = soup.select('body > div > table > tbody > tr > td.writer')
     writeTimeSelector = soup.select('body > div > table > tbody > tr > td.date')
     titleSelector = soup.select('body > div > table > tbody > tr > td.subject > a')
-
+    urlSelector = soup.select('body > div > table > tbody > tr > td.subject > a')
+    
     titles=[]
     writeTimes=[]
     writers=[]
     numOfTitles=[]
+    urls=[]
 
     for i in range(len(titleSelector)):
         titles.append(re.sub("†","",titleSelector[i].text.strip()))
         writers.append(writerSelector[i].text.strip())
         writeTimes.append(writeTimeSelector[i].text.strip())
         numOfTitles.append(numOfTitleSelector[i].text.strip())
-
-    return titles, writers, writeTimes, numOfTitles
+        urls.append(shortUrlN.create('http://board.sejong.ac.kr/'+str(urlSelector[i].attrs['href'])))#.text.strip()))
+        #print('http://board.sejong.ac.kr/'+str(urlSelector[i].attrs['href']))#.text.strip()))
+    return titles, writers, writeTimes, numOfTitles, urls
 
 
 if __name__ == '__main__':
-    titles, writers, writeTimes, numOfTitles = getNotice()
+    titles, writers, writeTimes, numOfTitles, urls = getNotice()
 
     for i in range(len(titles)):
-        print(titles[i], writers[i], writeTimes[i], numOfTitles[i])
+        print(titles[i], writers[i], writeTimes[i], numOfTitles[i], urls[i])

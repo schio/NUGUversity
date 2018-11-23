@@ -77,11 +77,11 @@ def saveNotice():
     cursor = db.cursor()
 
     # return type [titles, writers, writeTimes, numOfTitles]
-    titles, writers, writeTimes, numOfTitles = getNotice.getNotice()
+    titles, writers, writeTimes, numOfTitles, urls = getNotice.getNotice()
 
     for i in range(len(titles)):
-        sql = "INSERT IGNORE INTO notice(title, writer, writrTime, numOfTitle) VALUES (%s, %s, %s, %s);"    
-        cursor.execute(sql,(titles[i], writers[i], writeTimes[i], numOfTitles[i]))
+        sql = "INSERT IGNORE INTO notice(title, writer, writrTime, numOfTitle, link) VALUES (%s, %s, %s, %s, %s);"    
+        cursor.execute(sql,(titles[i], writers[i], writeTimes[i], numOfTitles[i], urls[i]))
     db.commit()
     db.close()
 
@@ -89,8 +89,8 @@ def getNotice():
     db=getDB()
     cursor = db.cursor()
 
-    sql = 'SELECT `title` FROM `notice` WHERE `dept` LIKE %s'
-    cursor.execute(sql,(deptName))
+    sql='SELECT `title` FROM `notice` ORDER BY `numOfTitle` DESC LIMIT 3'
+    cursor.execute(sql,())
     rows = cursor.fetchall()
     db.commit()
     db.close()
@@ -98,7 +98,7 @@ def getNotice():
         return 0
     else:
         # return type (('오전 9시', '오후 6시'),)
-        return rows[0][0],rows[0][1] # openTime, closeTime
+        return rows[0][0], rows[1][0], rows[2][0] # openTime, closeTime
 
 def saveDeptBook():
     db=getDB()
@@ -171,9 +171,6 @@ def getStudentsBuildingPrice(foodName):
         # return type (('3,500원',),)
         return rows[0][0]
 
-
-    
-
 def getGunja(day):
     todayInfo=getDay(day)
 
@@ -208,4 +205,5 @@ def dayKorean(day):
 
 if __name__ == '__main__':
     a=5
+    print(getNotice())
     
