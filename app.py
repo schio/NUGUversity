@@ -129,11 +129,12 @@ def start(svc):
 
 def get_detail_notice(index):
     nth_korean = ['첫번째', '두번째', '세번째']
-    index = nth_korean.index(index)
+    index = nth_korean.index(index)+1
+    
 
     # 데이터 가져오기
     data = dbWorks.getNoticeIncludeLink(index)
-    title, url, writer = data[index]
+    title, url, writer = data
 
     # 문자 보내기
 
