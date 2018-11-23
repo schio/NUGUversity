@@ -118,8 +118,11 @@ def start(svc):
         event = params['event']
         event = event['value']
         p(dbWorks.getCalendar(event)) #test
-        start_date, end_date = dbWorks.getCalendar(event)
-        result = {'start_date': start_date, 'end_date': end_date}
+        data = dbWorks.getCalendar(event)
+        if len(data) == 2: 
+            result = {'start_date': data[0], 'end_date': data[1]}
+        else:
+            result = {'start_date': data[0]}
 
     # 학사일정 (학기 정보 포함)
     elif actionName == 'answer.calendar_semester':
@@ -128,8 +131,11 @@ def start(svc):
         semester = params['semester']
         semester = semester['value']
         p(dbWorks.getCalendarIncludeSemester(event)) #test
-        start_date, end_date = dbWorks.getCalendarIncludeSemester(event)
-        result = {'start_date': start_date, 'end_date': end_date}
+        data = dbWorks.getCalendarIncludeSemester(event)
+        if len(data) == 2: 
+            result = {'start_date': data[0], 'end_date': data[1]}
+        else:
+            result = {'start_date': data[0]}
 
     # 케이스가 없는 경우
     else:
