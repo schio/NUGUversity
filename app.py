@@ -63,6 +63,25 @@ def start(svc):
         else:
             isError = True
 
+    # 전화번호 알아내기
+    elif actionName == 'answer.phone_book':
+        dept_name = params['dept_name']
+        dept_name = dept_name['value']
+        return_v = phone_book(dept_name)
+        if return_v:
+            result = {return_v[0]: return_v[1]}
+        else:
+            isError = True
+        
+    # 운영시간 알아내기
+    elif actionName == 'answer.dept_time':
+        dept_name = params['name_dept_time']
+        dept_name = dept_name['value']
+        return_v = dept_time(dept_name)
+        if return_v:
+            result = {return_v[0]: return_v[1], return_v[2]: return_v[3]}
+        else:
+            isError = True
 
     # 케이스가 없는 경우
     else:
@@ -100,6 +119,14 @@ def which_when_cafeteria(name, day):
 def which_library_seat(library_class):
     return getLibraryInfo.getEmptySeats(library_class)
     
+def phone_book(dept_name):
+    phone_number = dbWorks.getTelBook(dept_name)
+    return ('phone_number', phone_number)
+
+def dept_time(dept_name):
+    open_time, close_time = dbWorks.getDeptTime(dept_name)
+    return ('open_time', open_time, 'close_time', close_time)
+
 
 @app.route('/')
 def hello_world():
