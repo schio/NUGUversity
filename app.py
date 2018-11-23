@@ -25,6 +25,11 @@ def start(svc):
         return_v = meal_price(name)
         result = {return_v[0]: return_v[1]}
 
+    # 학식 메뉴 골라주기 (학생회관)
+    elif actionName == 'answer.random_meal':
+        data = dbWorks.getRandomStudentBuildingFood()
+        result = {'meal_name_random': data}
+        
     # 학식 메뉴(식당별)
     elif actionName == 'answer.which_cafeteria':
         which = params['which_2']
@@ -90,17 +95,15 @@ def start(svc):
         result = {
             'first': return_v[0],
             'second': return_v[1],
-            'third': return_v[2],
-            'second': return_v[3],
-            'second': return_v[4]
+            'third': return_v[2]
         }
 
+    # 1개의 공지사항 가져오기 (문자발송)
     elif actionName == 'answer.get_detail_notice':
         notice_index = params['index']
         notice_index = notice_index['value']
         data = get_detail_notice(notice_index)
         return data
-
 
     # 케이스가 없는 경우
     else:
