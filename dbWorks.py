@@ -3,7 +3,7 @@ import pymysql
 import getMeal
 import telBook
 import deptBook
-import getNotice
+import noticeGetter
 import calendar
 from pprint import pprint as p
 from datetime import datetime
@@ -109,7 +109,7 @@ def saveNotice():
     cursor = db.cursor()
 
     # return type [titles, writers, writeTimes, numOfTitles]
-    titles, writers, writeTimes, numOfTitles, urls = getNotice.getNotice()
+    titles, writers, writeTimes, numOfTitles, urls = noticeGetter.getNotice()
 
     for i in range(len(titles)):
         sql = "INSERT IGNORE INTO notice(title, writer, writrTime, numOfTitle, link) VALUES (%s, %s, %s, %s, %s);"    
@@ -120,7 +120,7 @@ def saveNotice():
 def getNotice():
     db=getDB()
     cursor = db.cursor()
-
+    saveNotice()
     sql='SELECT `title` FROM `notice` ORDER BY `numOfTitle` DESC LIMIT 3'
     cursor.execute(sql,())
     rows = cursor.fetchall()
@@ -186,19 +186,38 @@ def getCalendar(event):
     nowMonth=today.month
     if nowMonth>6 and nowMonth<=12:
         semester='2학기'
+    else:
+        semester='1학기'
 
     db=getDB()
     cursor = db.cursor()
 
-    sql = 'SELECT `startDate`, `endDate`, semester FROM `calendar` WHERE `event` LIKE %s'
-    cursor.execute(sql,(event))
+    sql = 'SELECT `startDate`, `endDate`, semester FROM `calendar` WHERE `event` LIKE %s and semester LIKE %s'
+    cursor.execute(sql,(event, semester))
     rows = cursor.fetchall()
     db.commit()
     db.close()
     if len(rows)==0:
         return 0
     else:
-        
+        # return type (('10월 22일', '10월 26일', '2학기'), ('4월 20일', '4월 26일', '1학기'))
+        # return type (('3월 2일', '', '1학기'), ('9월 3일', '', '2학기'))
+        return rows#[0],rows[0][1] # openTime, closeTime
+
+def getCalendarIncludeSemester(event, semester):
+    today=datetime.today()
+    
+    db=getDB()
+    cursor = db.cursor()
+
+    sql = 'SELECT `startDate`, `endDate`, semester FROM `calendar` WHERE `event` LIKE %s and semester LIKE %s'
+    cursor.execute(sql,(event, semester))
+    rows = cursor.fetchall()
+    db.commit()
+    db.close()
+    if len(rows)==0:
+        return 0
+    else:
         # return type (('10월 22일', '10월 26일', '2학기'), ('4월 20일', '4월 26일', '1학기'))
         # return type (('3월 2일', '', '1학기'), ('9월 3일', '', '2학기'))
         return rows#[0],rows[0][1] # openTime, closeTime
@@ -253,11 +272,11 @@ def getGunja(day):
         if len(rows)==0:
             db.close()
             return dayKorean(day) + '에는 식당을 운영하지 않습니다'
-    else:
-        lunch = ", ".join(rows[1][1].split(' ')[:3])
-        dinner = ", ".join(rows[0][1].split(' ')[:3])
-        db.close()
-        return dayKorean(day) + '의 점심 메뉴는 ' + lunch + '이고, 저녁 메뉴는 ' + dinner + '입니다'
+    
+    lunch = ", ".join(rows[1][1].split(' ')[:3])
+    dinner = ", ".join(rows[0][1].split(' ')[:3])
+    db.close()
+    return dayKorean(day) + '의 점심 메뉴는 ' + lunch + '이고, 저녁 메뉴는 ' + dinner + '입니다'
     
 
 def dayKorean(day):
@@ -267,7 +286,7 @@ def dayKorean(day):
 
 
 if __name__ == '__main__':
-    a=5
-    # p(getCalendar('개강'))
-    # p(getCalendar('중간고사'))
+    p(getCalendar('개강'))
+    p(getCalendar('중간고사'))
+    p(getCalendarIncludeSemester('중간고사','1학기'))
     p(getNoticeIncludeLink(1))
