@@ -102,13 +102,13 @@ def getDeptTime(deptName):
     sql = 'SELECT `openTime`, `closeTime` FROM `deptTime` WHERE `dept` LIKE %s'
     cursor.execute(sql,(deptName))
     rows = cursor.fetchall()
+    db.commit()
+    db.close()
     if len(rows)==0:
         return 0
     else:
         # return type (('오전 9시', '오후 6시'),)
         return rows[0][0],rows[0][1] # openTime, closeTime
-    db.commit()
-    db.close()
 def getTelBook(deptName):
     db=getDB()
     cursor = db.cursor()
@@ -116,13 +116,13 @@ def getTelBook(deptName):
     sql = 'SELECT `number` FROM `telBook` WHERE `department` LIKE %s'
     cursor.execute(sql,(deptName))
     rows = cursor.fetchall()
+    db.commit()
+    db.close()
     if len(rows)==0:
         return 0
     else:
         # return type ((3321,),)
         return rows[0][0]
-    db.commit()
-    db.close()
 
 def getStudentsBuildingPrice(foodName):
     db=getDB()
@@ -131,14 +131,13 @@ def getStudentsBuildingPrice(foodName):
     
     cursor.execute(sql,(foodName))
     rows = cursor.fetchall()
+    db.commit()
+    db.close()
     if len(rows)==0:
         return 0
     else:
         # return type (('3,500원',),)
         return rows[0][0]
-
-    db.commit()
-    db.close()
     
 
 def getGunja(day):
@@ -149,18 +148,18 @@ def getGunja(day):
     sql = "SELECT isDinner, foodList FROM mealGunja WHERE year LIKE %s AND date LIKE %s;"
     cursor.execute(sql,(todayInfo[0],todayInfo[1]))
     rows = cursor.fetchall()
-
     if len(rows)==0:
         saveGunja()
         cursor.execute(sql,(todayInfo[0],todayInfo[1]))
         rows = cursor.fetchall()
         if len(rows)==0:
+            db.close()
             return dayKorean(day) + '에는 식당을 운영하지 않습니다'
     else:
         lunch = ", ".join(rows[1][1].split(' ')[:3])
         dinner = ", ".join(rows[0][1].split(' ')[:3])
+        db.close()
         return dayKorean(day) + '의 점심 메뉴는 ' + lunch + '이고, 저녁 메뉴는 ' + dinner + '입니다'
-    db.close()
 
 def dayKorean(day):
     days = ['B_YESTERDAY', 'YESTERDAY', 'TODAY', 'TOMORROW', 'A_TOMORROW']
