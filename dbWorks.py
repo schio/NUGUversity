@@ -4,6 +4,7 @@ import getMeal
 import telBook
 import deptBook
 import getNotice
+import calendar
 from pprint import pprint as p
 from datetime import datetime
 from datetime import timedelta
@@ -158,13 +159,30 @@ def saveCalendar():
     cursor = db.cursor()
     calendarData=calendar.getCalendar()
 
-    for event in calendarData():
+    for event in calendarData:
         sql = "INSERT IGNORE INTO calendar(semester, event, startDate, endDate) VALUES (%s, %s, %s, %s);"
         cursor.execute(sql,(event[0], event[1], event[2], event[3]))
 
     db.commit()
     db.close()
         
+def getCalendar(event):
+    db=getDB()
+    cursor = db.cursor()
+
+    sql = 'SELECT `startDate`, `endDate`, semester FROM `calendar` WHERE `event` LIKE %s'
+    cursor.execute(sql,(event))
+    rows = cursor.fetchall()
+    db.commit()
+    db.close()
+    if len(rows)==0:
+        return 0
+    else:
+        
+        # return type (('10월 22일', '10월 26일', '2학기'), ('4월 20일', '4월 26일', '1학기'))
+        # return type (('3월 2일', '', '1학기'), ('9월 3일', '', '2학기'))
+        return rows#[0],rows[0][1] # openTime, closeTime
+
 def getDeptTime(deptName):
     db=getDB()
     cursor = db.cursor()
@@ -230,4 +248,5 @@ def dayKorean(day):
 
 if __name__ == '__main__':
     a=5
-    saveCalendar()
+    p(getCalendar('개강'))
+    p(getCalendar('중간고사'))
