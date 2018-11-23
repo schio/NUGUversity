@@ -107,7 +107,10 @@ def start(svc):
         notice_index = params['index']
         notice_index = notice_index['value']
         data = get_detail_notice(notice_index)
-        return data
+        result = {
+            data[0]: data[1],
+            data[2]: data[3]
+        }
 
     # 케이스가 없는 경우
     else:
