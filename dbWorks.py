@@ -3,6 +3,7 @@ import pymysql
 import getMeal
 import telBook
 import deptBook
+import getNotice
 from pprint import pprint as p
 from datetime import datetime
 from datetime import timedelta
@@ -70,6 +71,20 @@ def saveStudentsBuilding():
     
     db.commit()
     db.close()
+
+def saveNotice():
+    db=getDB()
+    cursor = db.cursor()
+
+    # return type [titles, writers, writeTimes, numOfTitles]
+    titles, writers, writeTimes, numOfTitles = getNotice.getNotice()
+
+    for i in range(len(titles)):
+        sql = "INSERT IGNORE INTO notice(title, writer, writrTime, numOfTitle) VALUES (%s, %s, %s, %s);"    
+        cursor.execute(sql,(titles[i], writers[i], writeTimes[i], numOfTitles[i]))
+    db.commit()
+    db.close()
+
 def saveDeptBook():
     db=getDB()
     cursor = db.cursor()
@@ -109,6 +124,7 @@ def getDeptTime(deptName):
     else:
         # return type (('오전 9시', '오후 6시'),)
         return rows[0][0],rows[0][1] # openTime, closeTime
+
 def getTelBook(deptName):
     db=getDB()
     cursor = db.cursor()
@@ -124,6 +140,7 @@ def getTelBook(deptName):
         # return type ((3321,),)
         return rows[0][0]
 
+
 def getStudentsBuildingPrice(foodName):
     db=getDB()
     cursor = db.cursor()
@@ -138,6 +155,8 @@ def getStudentsBuildingPrice(foodName):
     else:
         # return type (('3,500원',),)
         return rows[0][0]
+
+
     
 
 def getGunja(day):
@@ -148,6 +167,8 @@ def getGunja(day):
     sql = "SELECT isDinner, foodList FROM mealGunja WHERE year LIKE %s AND date LIKE %s;"
     cursor.execute(sql,(todayInfo[0],todayInfo[1]))
     rows = cursor.fetchall()
+    
+
     if len(rows)==0:
         saveGunja()
         cursor.execute(sql,(todayInfo[0],todayInfo[1]))
@@ -160,6 +181,7 @@ def getGunja(day):
         dinner = ", ".join(rows[0][1].split(' ')[:3])
         db.close()
         return dayKorean(day) + '의 점심 메뉴는 ' + lunch + '이고, 저녁 메뉴는 ' + dinner + '입니다'
+    
 
 def dayKorean(day):
     days = ['B_YESTERDAY', 'YESTERDAY', 'TODAY', 'TOMORROW', 'A_TOMORROW']
@@ -167,5 +189,5 @@ def dayKorean(day):
     return koreans[days.index(day)]
 
 if __name__ == '__main__':
-    p(getDeptTime('학술정보원'))
+    saveNotice()
     
