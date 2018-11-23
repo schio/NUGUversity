@@ -112,6 +112,24 @@ def start(svc):
             data[0]: data[1],
             data[2]: data[3]
         }
+    
+    # 학사일정 (학기 없이)
+    elif actionName == 'answer.calendar':
+        event = params['event']
+        event = event['value']
+        p(dbWorks.getCalendar(event)) #test
+        start_date, end_date = dbWorks.getCalendar(event)
+        result = {'start_date': start_date, 'end_date': end_date}
+
+    # 학사일정 (학기 정보 포함)
+    elif actionName == 'answer.calendar_semester':
+        event = params['event']
+        event = event['value']
+        semester = params['semester']
+        semester = semester['value']
+        p(dbWorks.getCalendarIncludeSemester(event)) #test
+        start_date, end_date = dbWorks.getCalendarIncludeSemester(event)
+        result = {'start_date': start_date, 'end_date': end_date}
 
     # 케이스가 없는 경우
     else:
