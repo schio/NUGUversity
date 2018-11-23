@@ -202,7 +202,7 @@ def getCalendar(event):
     else:
         # return type (('10월 22일', '10월 26일', '2학기'), ('4월 20일', '4월 26일', '1학기'))
         # return type (('3월 2일', '', '1학기'), ('9월 3일', '', '2학기'))
-        return rows#[0],rows[0][1] # openTime, closeTime
+        return rows[0]#[0],rows[0][1] # openTime, closeTime
 
 def getCalendarIncludeSemester(event, semester):
     today=datetime.today()
@@ -220,7 +220,7 @@ def getCalendarIncludeSemester(event, semester):
     else:
         # return type (('10월 22일', '10월 26일', '2학기'), ('4월 20일', '4월 26일', '1학기'))
         # return type (('3월 2일', '', '1학기'), ('9월 3일', '', '2학기'))
-        return rows#[0],rows[0][1] # openTime, closeTime
+        return rows[0]#[0],rows[0][1] # openTime, closeTime
 
 def getDeptTime(deptName):
     db=getDB()

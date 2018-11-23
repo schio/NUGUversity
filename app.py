@@ -119,7 +119,7 @@ def start(svc):
         event = event['value']
         p(dbWorks.getCalendar(event)) #test
         data = dbWorks.getCalendar(event)
-        if len(data) == 2: 
+        if data[1]: 
             result = {'start_date': data[0], 'end_date': data[1]}
         else:
             result = {'start_date': data[0]}
@@ -132,7 +132,7 @@ def start(svc):
         semester = semester['value']
         p(dbWorks.getCalendarIncludeSemester(event)) #test
         data = dbWorks.getCalendarIncludeSemester(event)
-        if len(data) == 2: 
+        if data[1]:
             result = {'start_date': data[0], 'end_date': data[1]}
         else:
             result = {'start_date': data[0]}
