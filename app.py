@@ -4,6 +4,7 @@ from pprint import pprint as p
 import json
 import dbWorks
 import getLibraryInfo
+import shortUrlN
 
 app = Flask(__name__)
 
@@ -83,6 +84,24 @@ def start(svc):
         else:
             isError = True
 
+    # 공지사항 가져오기
+    elif actionName == 'answer.get_notice':
+        return_v = dbWorks.getNotice()
+        result = {
+            'first': return_v[0],
+            'second': return_v[1],
+            'third': return_v[2],
+            'second': return_v[3],
+            'second': return_v[4]
+        }
+
+    elif actionName == 'answer.get_detail_notice':
+        notice_index = params['index']
+        notice_index = notice_index['value']
+        data = get_detail_notice(notice_index)
+        return data
+
+
     # 케이스가 없는 경우
     else:
         isError = True
@@ -101,6 +120,12 @@ def start(svc):
         }
     return json.dumps(result_dict)
 
+def get_detail_notice(index):
+    # 데이터 가져오기
+
+    # 문자 보내기
+
+    # text 생성
 
 def meal_price(name):
     mealPrice = dbWorks.getStudentsBuildingPrice(name)
@@ -142,7 +167,11 @@ def numToKorean(n):
 @app.route('/')
 def hello_world():
     return '<h1>Hello World!</h1><input type="textbox"/>'
- 
- 
+
+@app.route('/url')
+def url():
+    return shortUrlN.create()
+
+
 if __name__ == '__main__':
     app.run()
